@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Mat_ArrowGlyphs_From_Points
-  m_Shader: {fileID: 4800000, guid: c2ad5f1689ee5cc4aaa9fc488a10af0a, type: 3}
+  m_Shader: {fileID: 4800000, guid: 8cd0af4f5764ffb4f94efb80fba0ca8d, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -74,16 +74,17 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _MaxDistance: 3
+    - _MaxDistance: 20
     - _Metallic: 0
-    - _MidDistance: 1.25
-    - _MinDistance: 0
+    - _MidDistance: 15
+    - _MinDistance: 1
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Thickness: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:

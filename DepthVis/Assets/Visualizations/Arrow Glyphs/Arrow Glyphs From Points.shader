@@ -3,12 +3,12 @@ Shader "Custom/Arrow Glyphs From Points"
 {
 	Properties
 	{
-		 _Color("Main Color", Color) = (1,.5,.5,1)
 		_LargeGlyphs("Texture", 2D) = "white" {}
 		_SmallGlyphs("Texture", 2D) = "white" {}
 		_MaxDistance("MaxDistance", Float) = 0.3
 		_MidDistance("MidDistance", Float) = 0.15
 		_MinDistance("MinDistance", Float) = 0.05
+		_Thickness ("Thickness", Float) = 0.8
 	}
 		SubShader
 		{
@@ -61,9 +61,12 @@ Blend SrcAlpha OneMinusSrcAlpha
 				float _MinDistance;
 				float3 centerPosition;
 				int _SmallGlyphsON;
+				float _Thickness;
+
 				// Handle Multiple Spheres 
 				int _CenterPointAmount;
 				float4 _CenterPositionArray[10];
+
 
 				v2g vert(appdata v)
 				{
@@ -86,12 +89,12 @@ Blend SrcAlpha OneMinusSrcAlpha
 							float distance = length(centerPosition - input[0].objPos);
 							float3 SampleToCenter = normalize(centerPosition - input[0].objPos);
 							float front = dot(SampleToCenter, normalize(input[0].normal));
-							float thickness = 0.01;
+							float thickness = _Thickness;
 
 							// Change glyph length based on small or large glyphs
 							if (_SmallGlyphsON) {
 								_MaxDistance = _MidDistance;
-								thickness = 0.005;
+								thickness = thickness*0.75;
 							}
 							else _MinDistance = _MidDistance;
 
@@ -196,6 +199,10 @@ Blend SrcAlpha OneMinusSrcAlpha
 						float3 color_min = float3(1, 0.0, 0.2);
 						fragColor = float4(float3(((i.distance / vmax) * color_max.r) + ((1 - (i.distance / vmax)) * color_min.r), ((i.distance / vmax) * color_max.g) + ((1 - (i.distance / vmax)) * color_min.g), ((i.distance / vmax) * color_max.b) + ((1 - (i.distance / vmax)) * color_min.b)), alpha);
 					}
+
+					//if (i.distance > 0){
+					//	fragColor = float4 (1,0,0,1);
+					//}
 
 					UNITY_APPLY_FOG(i.fogCoord, fragColor);
 					return fragColor;
