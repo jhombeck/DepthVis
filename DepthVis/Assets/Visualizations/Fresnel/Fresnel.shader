@@ -1,11 +1,9 @@
-﻿Shader "Custom/Fresnel" {
+﻿// Based on a tutorial from https://www.ronja-tutorials.com/post/012-fresnel/
+Shader "Custom/Fresnel" {
     //show values to edit in inspector
     Properties{
         _Color("Tint", Color) = (0, 0, 0, 1)
         _MainTex("Texture", 2D) = "white" {}
-        _Smoothness("Smoothness", Range(0, 1)) = 0
-        _Metallic("Metalness", Range(0, 1)) = 0
-        [HDR] _Emission("Emission", color) = (0,0,0)
 
         _FresnelColor("Fresnel Color", Color) = (1,1,1,1)
         [PowerSlider(4)] _FresnelExponent("Fresnel Exponent", Range(0.25, 4)) = 1
@@ -24,10 +22,6 @@
 
             sampler2D _MainTex;
             fixed4 _Color;
-
-            half _Smoothness;
-            half _Metallic;
-            half3 _Emission;
 
             float3 _FresnelColor;
             float _FresnelExponent;
@@ -48,8 +42,7 @@
                 o.Albedo = col.rgb;
 
                 //just apply the values for metalness and smoothness
-                o.Metallic = _Metallic;
-                o.Smoothness = _Smoothness;
+
 
                 //get the dot product between the normal and the view direction
                 float fresnel = dot(i.worldNormal, i.viewDir);
@@ -60,7 +53,7 @@
                 //combine the fresnel value with a color
                 float3 fresnelColor = fresnel * _FresnelColor;
                 //apply the fresnel value to the emission
-                o.Emission = _Emission + fresnelColor;
+                o.Emission =  fresnelColor;
             }
             ENDCG
         }

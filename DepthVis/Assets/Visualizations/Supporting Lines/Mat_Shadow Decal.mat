@@ -97,6 +97,7 @@ Material:
     - _OutlineSpeed: 50
     - _Parallax: 0.02
     - _ShadowIntensity: 0.5
+    - _ShadowSoftness: 0.6
     - _ShadowTexRotation: 94
     - _ShadowTexSize: 1
     - _ShadowTexTransparencyCoef: 1
@@ -108,15 +109,17 @@ Material:
     - _StepAmount: 2
     - _StepWidth: 0.25
     - _TextureEmissionIntensity: 0.62
+    - _Threshold: 1
     - _UVSec: 0
     - _UseAnimation: 0
     - _UseShadowTex: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Emission: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowColor: {r: 1, g: 0, b: 0, a: 1}
     - _ShadowTint: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _SourcePos: {r: 0, g: 0, b: 0, a: 0}
     - _SpecularTint: {r: 1, g: 1, b: 1, a: 1}

@@ -47,6 +47,7 @@ Shader "Unlit/SimpleGlyph"
             uniform bool invertGlyph = true;
             uniform float radius;
             uniform float _Visibility;
+            uniform float _distanceTumor;
             uniform float _Fullness; // Between 0 and 1, depending on the min and max dist
             #define M_PI 3.1415926535897932384626433832795
 
@@ -78,7 +79,7 @@ Shader "Unlit/SimpleGlyph"
                 float depth = distance(_Center, _WorldSpaceCameraPos);
                 _Fullness = (depth - _min) / (_max - _min);
                 float4 C; // output color
-                float3 color = float3(217, 95, 2) / 255.0;
+                float3 color = _distanceTumor * float3(217, 207, 78) / 255.0 + (1 - _distanceTumor) * float3(227, 12, 2) / 255.0;
                 float3 borderColor = float3(27, 158, 119) / 255.0;
                 borderColor /= 2;
 
@@ -249,3 +250,4 @@ Shader "Unlit/SimpleGlyph"
         }
     }
 }
+

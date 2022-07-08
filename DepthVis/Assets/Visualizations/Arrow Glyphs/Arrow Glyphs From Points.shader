@@ -5,9 +5,8 @@ Shader "Custom/Arrow Glyphs From Points"
 	{
 		_LargeGlyphs("Texture", 2D) = "white" {}
 		_SmallGlyphs("Texture", 2D) = "white" {}
-		_MaxDistance("MaxDistance", Float) = 0.3
-		_MidDistance("MidDistance", Float) = 0.15
-		_MinDistance("MinDistance", Float) = 0.05
+		_MaxDistance("Maximal Glyph Distance", Float) = 0.3
+		_MidDistance("Switch Glyph Distance", Float) = 0.15
 		_Thickness ("Thickness", Float) = 0.8
 	}
 		SubShader
@@ -34,7 +33,7 @@ Blend SrcAlpha OneMinusSrcAlpha
 
 				#include "UnityCG.cginc"
 
-			   // self-defined struct that stores data retrieved from GPU<span              data-mce-type="bookmark"                id="mce_SELREST_start"              data-mce-style="overflow:hidden;line-height:0"              style="overflow:hidden;line-height:0"           ></span>
+
 				struct appdata {
 					float4 vertex : POSITION;
 					float3 normal : NORMAL;
@@ -58,7 +57,7 @@ Blend SrcAlpha OneMinusSrcAlpha
 				sampler2D _SmallGlyphs;
 				float _MaxDistance;
 				float _MidDistance;
-				float _MinDistance;
+				float _MinDistance = 0.05;
 				float3 centerPosition;
 				int _SmallGlyphsON;
 				float _Thickness;
