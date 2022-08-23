@@ -199,10 +199,6 @@ Blend SrcAlpha OneMinusSrcAlpha
 						fragColor = float4(float3(((i.distance / vmax) * color_max.r) + ((1 - (i.distance / vmax)) * color_min.r), ((i.distance / vmax) * color_max.g) + ((1 - (i.distance / vmax)) * color_min.g), ((i.distance / vmax) * color_max.b) + ((1 - (i.distance / vmax)) * color_min.b)), alpha);
 					}
 
-					//if (i.distance > 0){
-					//	fragColor = float4 (1,0,0,1);
-					//}
-
 					UNITY_APPLY_FOG(i.fogCoord, fragColor);
 					return fragColor;
 				}

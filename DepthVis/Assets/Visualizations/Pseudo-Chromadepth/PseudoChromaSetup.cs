@@ -23,7 +23,7 @@ public class PseudoChromaSetup : MonoBehaviour
         Vector3 min = _Rend.bounds.min;
         Vector3 max = _Rend.bounds.max;
 
-
+        // Update Uniforms
         _Material.SetVector("bb_min", min);
         _Material.SetVector("bb_max", max);
     }

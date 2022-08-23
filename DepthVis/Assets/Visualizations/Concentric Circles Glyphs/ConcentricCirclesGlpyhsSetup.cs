@@ -25,6 +25,7 @@ public class ConcentricCirclesGlpyhsSetup : MonoBehaviour
 
     void Update()
     {
+        // Update Uniforms
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         meshRenderer.material.SetVector("_Center", transform.position);
         meshRenderer.material.SetFloat("_min", min);

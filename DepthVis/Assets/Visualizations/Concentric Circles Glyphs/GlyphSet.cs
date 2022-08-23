@@ -14,11 +14,14 @@ public class GlyphSet : MonoBehaviour
         min = 0;
         max = 0;
         int children = transform.childCount;
+
+        // Update min and max distances
         for (int i = 0; i < children; ++i)
         {
             float distance = Vector3.Distance(transform.GetChild(i).position, Camera.main.transform.position);
             float distanceTumor = Vector3.Distance(transform.GetChild(i).position, Tumor.transform.position);
 
+           
             if (i == 0)
             {
                 minTumorDist = distanceTumor;
@@ -38,6 +41,8 @@ public class GlyphSet : MonoBehaviour
                     maxTumorDist = distanceTumor;
             }
         }
+
+        // Update distance for each child
         for (int i = 0; i < children; ++i)
         {
             float distanceTumor = Vector3.Distance(transform.GetChild(i).position, Tumor.transform.position);

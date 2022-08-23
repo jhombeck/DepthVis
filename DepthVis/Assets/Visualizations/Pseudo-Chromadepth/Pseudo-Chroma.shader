@@ -59,7 +59,7 @@
                 fixed4 col = tex2D(_MainTex, i.uv);
                 // apply fog
                UNITY_APPLY_FOG(i.fogCoord, col);
-               // if (bb_min.z < 100)
+
                 col.xyz = (_ColorMax.xyz - _ColorMin.xyz)* ((i.vertex_pass.z - bb_min.z) / (bb_max.z - bb_min.z)) + _ColorMin.xyz;
                 return col;
             }

@@ -8,12 +8,12 @@ using UnityEngine;
 
 public class GetContour : MonoBehaviour
 {
-    // Start is called before the first frame update
     public Camera Cam;
     public Material Mat;
     [Range(1f, 100f)]
     public float intensity = 1;
 
+    // Start is called before the first frame update
     void Start()
     {
         if (Cam == null)
@@ -31,6 +31,7 @@ public class GetContour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update Uniform
         Mat.SetFloat("_Intensity", intensity);
     }
 

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GetContourPoints : MonoBehaviour
 {
-    // Start is called before the first frame update
 
     public Camera renderCam;
     Texture2D tex;
@@ -31,6 +30,7 @@ public class GetContourPoints : MonoBehaviour
 
         float min = 0, max = 0;
 
+        // Select contour Points
         List<float> contourPoints = new List<float>();
         for (int i = 0; i < tex.width; i++)
         {
@@ -60,6 +60,7 @@ public class GetContourPoints : MonoBehaviour
             }
         }
         
+        // Reduce contour points 
         while (contourPoints.Count > 999)
         {
             int i = Random.Range(0, ((contourPoints.Count - 1) / 3));
@@ -78,6 +79,7 @@ public class GetContourPoints : MonoBehaviour
             contourPointArray[i + 2] = (contourPointArray[i + 2] - min) / (max - min);
         }
 
+        // Update Uniforms
         Mat.SetInt("_pointCount", contourPoints.Count);
         Mat.SetFloatArray("_contourPoints", contourPointArray);
         

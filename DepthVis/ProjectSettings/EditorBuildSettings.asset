@@ -4,5 +4,47 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Example Scenes/_Main Scene.unity
+    guid: 03b869a46f159ba4193678e9e44ea2b6
+  - enabled: 1
+    path: Assets/Example Scenes/Concentric Circles Glyphs.unity
+    guid: 5bc774ca0727dd444a7822f1632a274f
+  - enabled: 1
+    path: Assets/Example Scenes/Arrow Glyphs.unity
+    guid: 48563b4349cbaeb4a8f3260b3e40f69e
+  - enabled: 1
+    path: Assets/Example Scenes/Fog.unity
+    guid: 60b8c0e24b4f7684ca917b657dde764a
+  - enabled: 1
+    path: Assets/Example Scenes/Fresnel.unity
+    guid: 9790f4ca85ebfba4fa227217cc24e946
+  - enabled: 1
+    path: Assets/Example Scenes/Hatching.unity
+    guid: 1d5846205f6fbe2499dc23ca2e612586
+  - enabled: 1
+    path: Assets/Example Scenes/Heatmap.unity
+    guid: 5fd3a94082b2f49419aff1113a9a2c1d
+  - enabled: 1
+    path: Assets/Example Scenes/Isolines.unity
+    guid: 0c30187672a35b8418a747ae583560d7
+  - enabled: 1
+    path: Assets/Example Scenes/Phong.unity
+    guid: cfbfc1ba272ea0845b618afa82e7ea43
+  - enabled: 1
+    path: Assets/Example Scenes/Pseudo-Chromadepth.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Example Scenes/Supporting Anchors.unity
+    guid: 002ac65041195ea4db114848a6a57236
+  - enabled: 1
+    path: Assets/Example Scenes/Supporting Lines.unity
+    guid: 6f20e93ea2d5d5847a63c86ce9f6dd43
+  - enabled: 1
+    path: Assets/Example Scenes/Toon.unity
+    guid: 5a5bdab98ff4ec944ba502ea466607e1
+  - enabled: 1
+    path: Assets/Example Scenes/Void Space Surfaces.unity
+    guid: 8ebc8fbee4521a444b21cb67a40c6ab9
   m_configObjects: {}
