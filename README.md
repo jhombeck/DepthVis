@@ -1,7 +1,9 @@
 # DepthVis
 
-This project contains examples of different visualizations that can be used to improve the visibility of vascular structures. It is diretly  linked to the work published as a VCBM paper entitled: Distance Visualizations for Vascular Structures in Desktop and VR:
+This project contains examples of different visualizations that can be used to improve the visibility of vascular structures. It is diretly linked to the work published as a VCBM paper entitled: Distance Visualizations for Vascular Structures in Desktop and VR:
 Overview and Implementation.
+
+When using this project in any way please make sure to cite this work.
 
 The project includes a Unity project with the following thirteen visualizations:
 
