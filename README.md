@@ -5,7 +5,7 @@ Overview and Implementation.
 
 When using this project in any way please make sure to cite this work.
 
-The project includes a Unity project with the following thirteen visualizations:
+The project includes a Unity project with the following sixteen visualizations:
 
 1) Phong
 2) Toon
@@ -19,4 +19,7 @@ The project includes a Unity project with the following thirteen visualizations:
 10) Concentric Circle Glyphs
 11) Arrow Glyphs, 
 12) Void Space Surfaces,
-13) Hatching 
+13) Hatching
+14) Hathcing by Bentley Ottmann
+15) Endpoint Detection Object Space
+16) Endpoint Detection Screen Space
