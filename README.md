@@ -20,6 +20,6 @@ The project includes a Unity project with the following sixteen visualizations:
 11) Arrow Glyphs, 
 12) Void Space Surfaces,
 13) Hatching
-14) Hathcing by Bentley Ottmann
+14) Hatching by Bentley Ottmann
 15) Endpoint Detection Object Space
 16) Endpoint Detection Screen Space
