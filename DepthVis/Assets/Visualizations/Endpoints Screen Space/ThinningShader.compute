@@ -1,0 +1,179 @@
+// Each #kernel tells which function to compile; you can have many kernels
+
+#pragma kernel Binarize
+#pragma kernel ThinningStep
+#pragma kernel ThinningStepPrecomputed
+#pragma kernel EndpointDetection
+#pragma kernel HighlightEndpoints
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+RWTexture2D<half> Output;
+Texture2D<half> Input;
+Texture2D<float4> InputRGB;
+RWTexture2D<float4> OutputRGB;
+RWStructuredBuffer<float> HasChanged;
+StructuredBuffer<int> MaskValues;
+
+uint2 Size;
+
+bool IsPhase1;
+
+//#define _FarClip 1000
+//#define _NearClip 0.3
+//
+//#define zBufferParam_x (_FarClip - _NearClip)/_NearClip
+//#define zBufferParam_y 1
+//
+//float Linear01Depth(float depth)
+//{
+//    return 1 - 1.0 / (zBufferParam_x * depth + zBufferParam_y);
+//}
+
+[numthreads(8, 8, 1)]
+void Binarize(uint3 id : SV_DISPATCHTHREADID)
+{
+    if (any(id.xy >= Size) || any(id.xy < uint2(0, 0)))
+    {
+        return;
+    }
+
+    if (Input[id.xy].x > 0)
+    {
+        Output[id.xy] = 1;
+    }
+    else
+    {
+        Output[id.xy] = 0;
+    }
+}
+
+[numthreads(8, 8, 1)]
+void ThinningStep(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id.xy >= Size - 1) || any(id.xy <= uint2(0, 0)))
+    {
+        return;
+    }
+    // implementing Zhang, T. Y., & Suen, C. Y. (1984). A fast parallel algorithm for thinning digital patterns
+    bool p1 = Input[id.xy + uint2( 0,  0)].x;
+    bool p2 = Input[id.xy + uint2(-1,  0)].x;
+    bool p3 = Input[id.xy + uint2(-1, +1)].x;
+    bool p4 = Input[id.xy + uint2( 0, +1)].x;
+    bool p5 = Input[id.xy + uint2(+1, +1)].x;
+    bool p6 = Input[id.xy + uint2(+1,  0)].x;
+    bool p7 = Input[id.xy + uint2(+1, -1)].x;
+    bool p8 = Input[id.xy + uint2( 0, -1)].x;
+    bool p9 = Input[id.xy + uint2(-1, -1)].x;
+
+    uint A = uint(p2 > p3) + uint(p3 > p4) + uint(p4 > p5) + uint(p5 > p6) + uint(p6 > p7) + uint(p7 > p8) + uint(p8 > p9) + uint(p9 > p2);
+    uint B = uint(p2) + uint(p3) + uint(p4) + uint(p5) + uint(p6) + uint(p7) + uint(p8) + uint(p9);
+
+    bool condition_a = 2 <= B && B <= 6;
+    bool condition_b = A == 1;
+    bool condition_c = (IsPhase1 && p2 * p4 * p6 == 0)
+        || (!IsPhase1 && p2 * p4 * p8 == 0);
+    bool condition_d = (IsPhase1 && p4 * p6 * p8 == 0)
+        || (!IsPhase1 && p2 * p6 * p8 == 0);
+
+    bool oldActive = Input[id.xy].x;
+    bool newActive = oldActive && !(condition_a && condition_b && condition_c && condition_d);
+    Output[id.xy] = newActive;
+    if (oldActive != newActive)
+    {
+        HasChanged[0] = 1;
+    }
+}
+
+[numthreads(8, 8, 1)]
+void ThinningStepPrecomputed(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id.xy >= Size - 1) || any(id.xy <= uint2(0, 0)))
+    {
+        return;
+    }
+
+    bool p1 = Input[id.xy + uint2( 0,  0)].x;
+    bool p2 = Input[id.xy + uint2(-1,  0)].x;
+    bool p3 = Input[id.xy + uint2(-1, +1)].x;
+    bool p4 = Input[id.xy + uint2( 0, +1)].x;
+    bool p5 = Input[id.xy + uint2(+1, +1)].x;
+    bool p6 = Input[id.xy + uint2(+1,  0)].x;
+    bool p7 = Input[id.xy + uint2(+1, -1)].x;
+    bool p8 = Input[id.xy + uint2( 0, -1)].x;
+    bool p9 = Input[id.xy + uint2(-1, -1)].x;
+    
+
+    int lookupIndex = (!IsPhase1 ? 256u : 0)
+        | (p9 ? 128u : 0)
+        | (p8 ? 64u : 0)
+        | (p7 ? 32u: 0)
+        | (p6 ? 16u : 0)
+        | (p5 ? 8u : 0)
+        | (p4 ? 4u : 0)
+        | (p3 ? 2u : 0)
+        | (p2 ? 1u : 0);
+
+        
+    bool oldActive = Input[id.xy].x;
+    bool newActive = oldActive && !bool(MaskValues[lookupIndex]);
+    Output[id.xy] = newActive;
+    if (oldActive != newActive)
+    {
+        HasChanged[0] = 1;
+    }
+}
+
+[numthreads(8, 8, 1)]
+void EndpointDetection(uint3 id : SV_DispatchThreadID)
+{
+    if (any(id.xy >= Size - 1) || any(id.xy <= uint2(0, 0)))
+    {
+        Output[id.xy] = 0;
+        return;
+    }
+
+    float neighbours = Input[id.xy + uint2(-1,  0)].x
+        + Input[id.xy + uint2(-1, +1)].x
+        + Input[id.xy + uint2( 0, +1)].x
+        + Input[id.xy + uint2(+1, +1)].x
+        + Input[id.xy + uint2(+1,  0)].x
+        + Input[id.xy + uint2(+1, -1)].x
+        + Input[id.xy + uint2( 0, -1)].x
+        + Input[id.xy + uint2(-1, -1)].x;
+
+    Output[id.xy] = neighbours == 1 && Input[id.xy];
+}
+
+#define maskSize 20
+#define halfMaskSize (maskSize - 1)/2
+#define circleRadius 8
+
+[numthreads(8, 8, 1)]
+void HighlightEndpoints(uint3 id : SV_DISPATCHTHREADID)
+{
+    if (any(id.xy >= Size) || any(id.xy < uint2(0, 0)))
+    {
+        return;
+    }
+    
+	float final_intensity = 0;
+
+    if (!(any(id.xy >= Size - 5) || any(id.xy <= uint2(6, 6))))
+    {
+        const int2 center = int2(maskSize / 2, maskSize / 2);
+
+	    for (int i = 0; i < maskSize; ++i)
+	    {
+	    	for (int j = 0; j < maskSize; ++j)
+	    	{
+                const int2 pos = int2(i, j);
+                const float d = distance(pos, center);  
+                const float multiplier = smoothstep(circleRadius + 0.8, circleRadius - 0.8, d);
+	    		final_intensity += multiplier * Input[id.xy + uint2(i - halfMaskSize, j - halfMaskSize)];
+	    	}
+	    }
+    }
+
+    OutputRGB[id.xy] = lerp(InputRGB[id.xy], float4(1, 0, 0, 0), final_intensity);
+}
